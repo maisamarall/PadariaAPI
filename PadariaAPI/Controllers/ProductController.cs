@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PadariaAPI.Interfaces;
 using PadariaAPI.Models;
-using System.Security.Cryptography.X509Certificates;
 
 namespace PadariaAPI.Controllers
 {

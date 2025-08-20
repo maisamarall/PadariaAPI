@@ -1,4 +1,5 @@
 ﻿using PadariaAPI.Models;
+using PadariaAPI.Interfaces;
 
 namespace PadariaAPI.Service
 {
