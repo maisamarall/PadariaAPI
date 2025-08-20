@@ -1,11 +1,20 @@
 ﻿using PadariaAPI.Models;
+using System.Runtime.InteropServices;
 
 namespace PadariaAPI.Interfaces
 {
     public interface IClientService
     {
-        public Client ObterClientePorId(int id);
+        List<Client> GetClients();
+        void CreateClient(Client newClient);
+        Client ObterClientePorId(int id);
+        void AtualizarCliente(Client clienteAtualizado);
+    }
 
-        public List<Client> GetClients();
+    public interface IClientRepository
+    {
+        void CreateClient(Client newClient);
+        List<Client> GetClients();
+        void AtualizarCliente(Client clienteAtualizado);
     }
 }
