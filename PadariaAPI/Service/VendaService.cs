@@ -10,7 +10,7 @@ namespace PadariaAPI.Service
         private readonly IProductService _productService;
         // contexto do banco de dados para salvar a venda
 
-        public VendaService(IClientService clientService, IProductService productService )
+        public VendaService(IClientService clientService, IProductService productService)
         {
             _clientService = clientService;
             _productService = productService;
@@ -28,17 +28,20 @@ namespace PadariaAPI.Service
             // Valida se o produto existe e o estoque
             foreach (var item in venda.Itens)
             {
-                var produto = _productService.ObterProdutoPorId(item.Produto.Id);
+                var produto = _productService.ObterProdutoPorId(item.Product.Id);
                 if (produto == null)
                 {
-                    throw new Exception($"Produto com ID {item.Produto.Id} não encontrado.");
+                    throw new Exception($"Produto com ID {item.Product.Id} não encontrado.");
                 }
                 if (item.Quantidade > produto.Estoque)
                 {
-                    throw new Exception($"Estoque insuficiente para o produto {produto.Nome}.");
+                    throw new Exception($"Estoque insuficiente para o produto {produto.Name}.");
                 }
+                produto.Estoque -= item.Quantidade;
+                _productService.AtualizarProduto(produto);
             }
             return venda;
         }
     }
+
 }
