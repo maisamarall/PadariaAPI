@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PadariaAPI.Interfaces;
 using PadariaAPI.Models;
+using PadariaAPI.Service;
 
 namespace PadariaAPI.Controllers
 {
@@ -13,6 +14,13 @@ namespace PadariaAPI.Controllers
         public VendaController(IVendaService vendaService)
         {
             _vendaService = vendaService;
+        }
+
+        [HttpGet]
+        public IActionResult GetVendas()
+        {
+            var vendas = _vendaService.GetVendas();
+            return Ok(vendas);
         }
 
         [HttpPost]

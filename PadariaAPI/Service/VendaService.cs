@@ -8,12 +8,14 @@ namespace PadariaAPI.Service
     {
         private readonly IClientService _clientService;
         private readonly IProductService _productService;
+        private readonly IVendaService _vendaService;
         // contexto do banco de dados para salvar a venda
 
-        public VendaService(IClientService clientService, IProductService productService)
+        public VendaService(IClientService clientService, IProductService productService, IVendaService vendaService)
         {
             _clientService = clientService;
             _productService = productService;
+            _vendaService = vendaService;
         } /*, RepositorioDeVendas */
 
         public Venda CriarVenda(Venda venda)
@@ -41,6 +43,11 @@ namespace PadariaAPI.Service
                 _productService.AtualizarProduto(produto);
             }
             return venda;
+        }
+
+        public List<Venda> GetVendas()
+        {
+            return _vendaService.GetVendas();
         }
     }
 
