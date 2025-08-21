@@ -8,4 +8,8 @@ namespace PadariaAPI.Interfaces
         public List<Venda> GetVendas();
         // Aqui poderiamos adicionar outros métodos como ObterVendaPorId, por exemplo.
     }
+    public interface IVendaRepository
+    {
+        void CreateVenda(Venda newVenda);
+    }
 }
