@@ -5,7 +5,7 @@ using PadariaAPI.Models;
 namespace PadariaAPI.Controllers
 {
     [ApiController]
-    [Route("[controller")]
+    [Route("[controller]")]
     public class ProductController : Controller
     {
         private IProductService _productService;
@@ -19,7 +19,7 @@ namespace PadariaAPI.Controllers
         }
 
         [HttpPost(Name = "CreateProduct")]
-        public IActionResult CreateProduct (Product newProduct)
+        public IActionResult CreateProduct(Product newProduct)
         {
             _productService.CreateProduct(newProduct);
             return Ok();

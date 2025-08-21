@@ -45,6 +45,8 @@ namespace PadariaAPI.Service
             return venda;
         }
 
+            foreach ()
+
         public List<Venda> GetVendas()
         {
             return _vendaService.GetVendas();

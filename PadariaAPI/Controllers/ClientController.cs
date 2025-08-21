@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PadariaAPI.Interfaces;
 using PadariaAPI.Models;
+using PadariaAPI.Service;
 
 namespace PadariaAPI.Controllers
 {
@@ -22,11 +23,18 @@ namespace PadariaAPI.Controllers
             return Ok(clients);
         }
 
-        [HttpPost(Name = "GetClientById")]
+        [HttpGet(Name = "GetClientById")]
         public IActionResult ObterClientePorId(int id)
         {
             Client client = _clientService.ObterClientePorId(id);
             return Ok(client);
+        }
+
+        [HttpPost(Name = "CreateClient")]
+        public IActionResult CreateClient(Client newClient)
+        {
+            _clientService.CreateClient(newClient);
+            return Ok();
         }
 
     }
