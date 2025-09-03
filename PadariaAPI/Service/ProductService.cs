@@ -1,42 +1,43 @@
 ﻿using PadariaAPI.Models;
-using PadariaAPI.Interfaces;
-using PadariaAPI.Service;
-using System.Linq;
+using PadariaAPI.Interfaces.IServices;
+using PadariaAPI.Interfaces.IRepositories;
 
 namespace PadariaAPI.Service
 {
     public class ProductService : IProductService
     {
-        private readonly IProductRepository _productRepository;
+        private IProductRepository _productRepository;
 
         public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
 
-        public void CreateProduct(Product newProduct)
+        public Product CreateProduct(Product product)
         {
-            var produtoBuscado = _productRepository.GetProducts().FirstOrDefault(p => p.Name == newProduct.Name);
-            
-            if(produtoBuscado != null)
-            {
-                throw new Exception("Produto já cadastrado");
-            }
+            Product newProduct = _productRepository.CreateProduct(product);
 
-            _productRepository.CreateProduct(newProduct);
+            return newProduct;
         }
         public List<Product> GetProducts()
         {
             return _productRepository.GetProducts();
         }
-        public Product ObterProdutoPorId(int id)
+        public Product ProcurarPorId(Guid Id)
         {
-            return _productRepository.GetProducts().FirstOrDefault(p => p.Id == id);
+            try
+            {
+                return _productRepository.ProcurarPorId(Id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public void AtualizarProduto(Product produtoAtualizado)
+        public void AtualizarEstoque(Guid ProductId, int Quantity)
         {
-            _productRepository.AtualizarProduto(produtoAtualizado);
+            throw new NotImplementedException();
         }
     }
 }

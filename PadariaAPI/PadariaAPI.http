@@ -1,4 +1,4 @@
-@PadariaAPI_HostAddress = http://localhost:5146
+@PadariaAPI_HostAddress = http://localhost:5172
 
 GET {{PadariaAPI_HostAddress}}/weatherforecast/
 Accept: application/json
