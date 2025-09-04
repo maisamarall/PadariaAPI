@@ -1,41 +1,29 @@
 ﻿using PadariaAPI.Models;
-using PadariaAPI.Interfaces;
-using PadariaAPI.Service;
-using System.Linq;
+using PadariaAPI.Interfaces.IServices;
+using PadariaAPI.Interfaces.IRepositories;
 
 namespace PadariaAPI.Service
 {
     public class ClientService : IClientService
     {
-        private readonly IClientRepository _clientRepository;
-        
-        public ClientService(IClientRepository clientRepository)
+        private IClientRepository _clientRepository;
+
+        public ClientService() { }
+
+        public void CreateClient(Client client)
         {
-            _clientRepository = clientRepository;
-        }
-        
-        public void CreateClient(Client newClient)
-        {
-            var clientBuscado = _clientRepository.GetClients().FirstOrDefault(c => c.Name == newClient.Name);
-            
-            if (clientBuscado != null)
+            var clientWithEmail = _clientRepository.PegarClientePorEmail(client.Email);
+
+            if (clientWithEmail != null)
             {
-                throw new Exception("Cliente já cadastrado");
+                throw new Exception("Email ja cadastrado.");
             }
 
-            _clientRepository.CreateClient(newClient);
+            _clientRepository.CreateClient(client);
         }
         public List<Client> GetClients()
         {
             return _clientRepository.GetClients();
-        }
-        public Client ObterClientePorId(int id)
-        {
-            return _clientRepository.GetClients().FirstOrDefault(c => c.Id == id);
-        }
-        public void AtualizarCliente(Client clienteAtualizado)
-        {
-            _clientRepository.AtualizarCliente(clienteAtualizado);
         }
     }
 }

@@ -1,62 +1,59 @@
-﻿using PadariaAPI.Controllers;
-using PadariaAPI.Interfaces;
+﻿using PadariaAPI.Interfaces.IRepositories;
+using PadariaAPI.Interfaces.IServices;
 using PadariaAPI.Models;
 
 namespace PadariaAPI.Service
 {
     public class VendaService : IVendaService
     {
-        private readonly IVendaRepository _vendaRepository;
-        private readonly IClientService _clientService;
+        private readonly IClientRepository _clientRepository;
         private readonly IProductService _productService;
+        private readonly IVendaRepository _vendaRepository;
         // contexto do banco de dados para salvar a venda
 
-        public VendaService(IVendaRepository vendaRepository, IClientService clientService, IProductService productService)
+        public VendaService(IClientRepository clientRepository, IProductService productService, IVendaRepository vendaRepository)
         {
-            _vendaRepository = vendaRepository;
-            _clientService = clientService;
+            _clientRepository = clientRepository;
             _productService = productService;
+            _vendaRepository = vendaRepository;
         } /*, RepositorioDeVendas */
 
-        public Venda CriarVenda(Venda venda)
+        public void Create(Venda vendaDto)
         {
-            // Valida se o cliente existe
-            var clienteExiste = _clientService.ObterClientePorId(venda.Cliente.Id);
-            if (clienteExiste == null)
+            try
             {
-                throw new Exception("Cliente não encontrado.");
-            }
+                Client clientOld = _clientRepository.ProcurarPorId(vendaDto.ClientId);
+                if (clientOld == null)
+                {
+                    throw new Exception("Cliente invalido");
+                }
 
-            // Valida se o produto existe e o estoque
-            foreach (var item in venda.Itens)
+                Product productOld = _productService.ProcurarPorId(vendaDto.ClientId);
+                if (clientOld == null)
+                {
+                    throw new Exception("Cliente invalido");
+                }
+
+                if (productOld.Quantity < vendaDto.Quantity)
+                {
+                    throw new Exception("Estoque indisponivel");
+                }
+
+                _productService.AtualizarEstoque(productOld.Id, vendaDto.Quantity);
+
+                Venda newVenda = new Venda();
+
+                newVenda.Quantity = vendaDto.Quantity;
+                newVenda.Price = vendaDto.Price;
+                newVenda.ClientId = vendaDto.ClientId;
+                newVenda.ProductId = vendaDto.ProductId;
+
+                _vendaRepository.Create(newVenda);
+            }
+            catch (Exception ex)
             {
-                var produto = _productService.ObterProdutoPorId(item.Product.Id);
-                if (produto == null)
-                {
-                    throw new Exception($"Produto com ID {item.Product.Id} não encontrado.");
-                }
-                if (item.Quantidade <= 0)
-                {
-                    throw new InvalidOperationException($"A quantidade do produto {produto.Name} deve ser maior que zero.");
-                }
-                if (item.Quantidade > produto.Estoque)
-                {
-                    throw new Exception($"Estoque insuficiente para o produto {produto.Name}.");
-                }
-
-                produto.Estoque = item.Quantidade;
-                _productService.AtualizarProduto(produto);  // Chamaria a service para atualizar.
+                throw new Exception(ex.Message);
             }
-        
-            _vendaRepository.CreateVenda(venda);
-
-            return venda;
-        }
-
-        public List<Venda> GetVendas()
-        {
-            return _vendaRepository.GetVendas();
         }
     }
-
 }

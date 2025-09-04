@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PadariaAPI.Interfaces;
+using PadariaAPI.Interfaces.IServices;
 using PadariaAPI.Models;
-using PadariaAPI.Service;
 
 namespace PadariaAPI.Controllers
 {
@@ -16,24 +15,17 @@ namespace PadariaAPI.Controllers
             _vendaService = vendaService;
         }
 
-        [HttpGet]
-        public IActionResult GetVendas()
-        {
-            var vendas = _vendaService.GetVendas();
-            return Ok(vendas);
-        }
-
-        [HttpPost]
-        public IActionResult CriarVenda(Venda venda)
+        [HttpPost(Name = "CreateVenda")]
+        public IActionResult CriarVenda([FromBody] Venda vendaDto)
         {
             try
             {
-                var vendaCriada = _vendaService.CriarVenda(venda);
-                return Ok(vendaCriada); // Aqui vai retornar a venda foi criada com sucesso
+                _vendaService.Create(vendaDto);
+                return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Retorna um erro em caso de falha nas valid.
+                return BadRequest(ex.Message);
             }
         }
     }
