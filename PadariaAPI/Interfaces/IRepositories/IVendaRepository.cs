@@ -4,6 +4,8 @@ namespace PadariaAPI.Interfaces.IRepositories
 {
     public interface IVendaRepository
     {
-        public void Create(Venda venda);
+        public List<Venda> GetVendas();
+        public void CreateVenda(Venda venda);
+        public Venda ProcurarPorId(Guid id);
     }
 }
