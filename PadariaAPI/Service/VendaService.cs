@@ -18,7 +18,7 @@ namespace PadariaAPI.Service
             _vendaRepository = vendaRepository;
         } /*, RepositorioDeVendas */
 
-        public void CreateVenda(Venda vendaDto)
+        public void Create(Venda vendaDto)
         {
             try
             {
