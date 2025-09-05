@@ -7,5 +7,6 @@ namespace PadariaAPI.Interfaces.IRepositories
         public List<Venda> GetVendas();
         public void CreateVenda(Venda venda);
         public Venda ProcurarPorId(Guid id);
+        
     }
 }

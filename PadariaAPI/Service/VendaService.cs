@@ -18,7 +18,7 @@ namespace PadariaAPI.Service
             _vendaRepository = vendaRepository;
         } /*, RepositorioDeVendas */
 
-        public void Create(Venda vendaDto)
+        public void CreateVenda(Venda vendaDto)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace PadariaAPI.Service
                 newVenda.ClientId = vendaDto.ClientId;
                 newVenda.ProductId = vendaDto.ProductId;
 
-                _vendaRepository.Create(newVenda);
+                _vendaRepository.CreateVenda(newVenda);
             }
             catch (Exception ex)
             {
